@@ -19,7 +19,7 @@
     <link href="http://fonts.googleapis.com/css?family=Raleway:400,900,800,700,500,200,100,600" rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.cs' %}s">
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/misc.css' %}">
     <link rel="stylesheet" href="{% static 'css/blue-scheme.css' %}">
 
@@ -33,10 +33,10 @@
 <body>
 <div class="responsive_menu">
     <ul class="main_menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#">Portfolio</a>
+        <li><a href="{% url 'home:home' %}">Home</a></li>
+        <li><a href="#">Account</a>
             <ul>
-                <li><a href="portfolio.html">Portfolio Grid</a></li>
+                <li><a href="{% url 'account:user_login' %}">Login</a></li>
                 <li><a href="project-image.html">Project Image</a></li>
                 <li><a href="project-slideshow.html">Project Slideshow</a></li>
             </ul>
@@ -70,15 +70,15 @@
 
                     <nav class="main-nav visible-md visible-lg">
                         <ul class="sf-menu">
-                            <li class="active"><a href="index.html">Home</a></li>
-                            <li><a href="#">Portfolio</a>
+                            <li class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"><a href="{% url 'home:home' %}">Home</a></li>
+                            <li class="{% if request.resolver_match.url_name == 'user_dashboard' %}active{% endif %}"><a href="{% url 'account:user_dashboard' %}">Account</a>
                                 <ul>
-                                    <li><a href="portfolio.html">Portfolio Grid</a></li>
+                                    <li><a href="{% url 'account:user_login' %}">Login</a></li>
                                     <li><a href="project-image.html">Project Image</a></li>
                                     <li><a href="project-slideshow.html">Project Slideshow</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">Blog</a>
+                            <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}"><a href="{% url 'blog:blog' %}">Blog</a>
                                 <ul>
                                     <li><a href="blog.html">Blog Standard</a></li>
                                     <li><a href="blog-single.html">Blog Single</a></li>

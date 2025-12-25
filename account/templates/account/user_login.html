@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Accounts
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container"
+         style="width: 20%; height: 50%; margin-top: 10%; margin-block-end: 5%; border: solid 2px dodgerblue; padding: 40px; background-color: darkblue">
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>نام کاربری :</label>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                <label>رمز عبور :</label>
+                {{ form.password }}
+            </div>
+{#            <div class="form-group form-check">#}
+{#                <input type="checkbox" class="form-check-input" id="exampleCheck1">#}
+{#                <label class="form-check-label" for="exampleCheck1">Check me out</label>#}
+{#            </div>#}
+            <div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
