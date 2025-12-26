@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="fa-ir" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -53,7 +53,7 @@
             {% endif %}
             <ul>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'account:user_dashboard' %}">Profile</a></li>
+
                     <li>
                         <form method="post" action="{% url 'account:user_logout' %}">
                             {% csrf_token %}
@@ -62,7 +62,7 @@
                     </li>
                 {% else %}
                     <li><a href="{% url 'account:user_login' %}">Login</a></li>
-                    <li><a href="{% url 'account:user_login' %}">Login</a></li>
+                    <li><a href="{% url 'account:user_register' %}">Register</a></li>
                 {% endif %}
             </ul>
         </li>
@@ -101,20 +101,19 @@
                         </span>
                                 </a>
                             {% else %}
-                                <a href="#">Account</a>
+                                <a href="#">حساب کاربری</a>
                             {% endif %}
                             <ul>
                                 {% if user.is_authenticated %}
-                                    <li><a href="{% url 'account:user_dashboard' %}">Profile</a></li>
                                     <li>
                                         <form method="post" action="{% url 'account:user_logout' %}">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-link">Logout</button>
+                                            <button style="color: red" type="submit" class="btn btn-link">خروج از حساب</button>
                                         </form>
                                     </li>
                                 {% else %}
-                                    <li><a href="{% url 'account:user_login' %}">Login</a></li>
-                                    <li><a href="{% url 'account:user_login' %}">Login</a></li>
+                                    <li><a href="{% url 'account:user_login' %}">ورود به حساب</a></li>
+                                    <li><a href="{% url 'account:user_register' %}">ثبت نام </a></li>
                                 {% endif %}
                             </ul>
                         </li>
