@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
@@ -15,3 +15,6 @@ class UserLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('account:user_dashboard')
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy('home:home')

@@ -34,11 +34,36 @@
 <div class="responsive_menu">
     <ul class="main_menu">
         <li><a href="{% url 'home:home' %}">Home</a></li>
-        <li><a href="#">Account</a>
+        <li class="{% if request.resolver_match.url_name == 'user_dashboard' %}active{% endif %}">
+            {% if user.is_authenticated %}
+                <a href="{% url 'account:user_dashboard' %}">
+                    <img src="{{ user.profile.avatar.url }}"
+                         style="width:28px;height:28px;border-radius:50%;vertical-align:middle;"
+                         alt="avatar">
+                    <span style="margin-right:6px;">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </span>
+                </a>
+            {% else %}
+                <a href="#">Account</a>
+            {% endif %}
             <ul>
-                <li><a href="{% url 'account:user_login' %}">Login</a></li>
-                <li><a href="project-image.html">Project Image</a></li>
-                <li><a href="project-slideshow.html">Project Slideshow</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'account:user_dashboard' %}">Profile</a></li>
+                    <li>
+                        <form method="post" action="{% url 'account:user_logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'account:user_login' %}">Login</a></li>
+                    <li><a href="{% url 'account:user_login' %}">Login</a></li>
+                {% endif %}
             </ul>
         </li>
         <li><a href="#">Blog</a>
@@ -58,50 +83,77 @@
 
         <div class="row">
 
-            <div class="col-md-12">
-
-                <div class="pull-left logo">
-                    <a href="index.html">
-                        <img src="{% static 'images/logo.png' %}" alt="Medigo by templatemo">
-                    </a>
-                </div>    <!-- /.logo -->
-
-                <div class="main-navigation pull-right">
-
-                    <nav class="main-nav visible-md visible-lg">
-                        <ul class="sf-menu">
-                            <li class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"><a href="{% url 'home:home' %}">Home</a></li>
-                            <li class="{% if request.resolver_match.url_name == 'user_dashboard' %}active{% endif %}"><a href="{% url 'account:user_dashboard' %}">Account</a>
-                                <ul>
+            <div class="main-navigation pull-left">
+                <nav class="main-nav visible-md visible-lg">
+                    <ul class="sf-menu">
+                        <li class="{% if request.resolver_match.url_name == 'user_dashboard' %}active{% endif %}">
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'account:user_dashboard' %}">
+                                    <img src="{{ user.profile.avatar.url }}"
+                                         style="width:28px;height:28px;border-radius:50%;vertical-align:middle;"
+                                         alt="avatar">
+                                    <span style="margin-right:6px;">
+                            {% if user.get_full_name %}
+                                {{ user.get_full_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </span>
+                                </a>
+                            {% else %}
+                                <a href="#">Account</a>
+                            {% endif %}
+                            <ul>
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url 'account:user_dashboard' %}">Profile</a></li>
+                                    <li>
+                                        <form method="post" action="{% url 'account:user_logout' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-link">Logout</button>
+                                        </form>
+                                    </li>
+                                {% else %}
                                     <li><a href="{% url 'account:user_login' %}">Login</a></li>
-                                    <li><a href="project-image.html">Project Image</a></li>
-                                    <li><a href="project-slideshow.html">Project Slideshow</a></li>
-                                </ul>
-                            </li>
-                            <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}"><a href="{% url 'blog:blog' %}">Blog</a>
-                                <ul>
-                                    <li><a href="blog.html">Blog Standard</a></li>
-                                    <li><a href="blog-single.html">Blog Single</a></li>
-                                    <li><a href="#">visit templatemo</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="archives.html">Archives</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul> <!-- /.sf-menu -->
-                    </nav> <!-- /.main-nav -->
+                                    <li><a href="{% url 'account:user_login' %}">Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
-                    <!-- This one in here is responsive menu for tablet and mobiles -->
-                    <div class="responsive-navigation visible-sm visible-xs">
-                        <a href="#nogo" class="menu-toggle-btn">
-                            <i class="fa fa-bars"></i>
-                        </a>
-                    </div> <!-- /responsive_navigation -->
+            <div class="main-navigation pull-right">
 
-                </div> <!-- /.main-navigation -->
+                <nav class="main-nav visible-md visible-lg">
+                    <ul class="sf-menu">
+                        <li class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"><a
+                                href="{% url 'home:home' %}">Home</a></li>
 
-            </div> <!-- /.col-md-12 -->
+                        <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}"><a
+                                href="{% url 'blog:blog' %}">Blog</a>
+                            <ul>
+                                <li><a href="blog.html">Blog Standard</a></li>
+                                <li><a href="blog-single.html">Blog Single</a></li>
+                                <li><a href="#">visit templatemo</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="archives.html">Archives</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul> <!-- /.sf-menu -->
+                </nav> <!-- /.main-nav -->
 
-        </div> <!-- /.row -->
+                <!-- This one in here is responsive menu for tablet and mobiles -->
+                <div class="responsive-navigation visible-sm visible-xs">
+                    <a href="#nogo" class="menu-toggle-btn">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div> <!-- /responsive_navigation -->
+
+            </div> <!-- /.main-navigation -->
+
+        </div> <!-- /.col-md-12 -->
+
+    </div> <!-- /.row -->
 
     </div> <!-- /.container -->
 </header> <!-- /.site-header -->
