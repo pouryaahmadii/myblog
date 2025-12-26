@@ -21,18 +21,18 @@
             {% csrf_token %}
             <div class="form-group">
                 <label>نام کاربری :</label>
-                {{ form.username }}
+                <div style="text-align: center">{{ form.username }}</div>
             </div>
             <div class="form-group">
                 <label>رمز عبور :</label>
-                {{ form.password }}
+                <div style="text-align: center">{{ form.password }}</div>
             </div>
-            {#            <div class="form-group form-check">#}
-            {#                <input type="checkbox" class="form-check-input" id="exampleCheck1">#}
-            {#                <label class="form-check-label" for="exampleCheck1">Check me out</label>#}
-            {#            </div>#}
             <div style="text-align: center;">
                 <button type="submit" class="btn btn-primary">ورود</button>
+            </div>
+            <br>
+            <div>
+                <button class="btn- btn-block"><a href="{% url 'account:user_register' %}">ثبت نام حساب </a></button>
             </div>
         </form>
     </div>

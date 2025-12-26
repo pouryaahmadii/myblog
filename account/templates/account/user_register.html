@@ -21,7 +21,11 @@
             {% csrf_token %}
             {{ form.as_p }}
             <div style="text-align: center;">
-                <button type="submit" class="btn btn-primary">ثبت نام</button>
+                <button type="submit" class="btn btn-block">ثبت نام</button>
+            </div>
+            <br>
+            <div>
+                <button class="btn- btn-block"><a href="{% url 'account:user_login' %}">ورود به حساب</a></button>
             </div>
         </form>
     </div>
