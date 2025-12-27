@@ -65,13 +65,13 @@
                     </div>
                 </div>
 
-                <!-- منوی سمت راست (که قبلاً سمت چپ بود) -->
+                <!-- منوی سمت راست -->
                 <div class="col-md-3 col-sm-12 mb-3 order-md-1">
                     <div class="card shadow-sm text-end">
                         <div class="card-body p-2">
                             <div class="text-center mb-3">
                                 <img src="{{ user.profile.avatar.url }}" class="rounded-circle mb-2"
-                                     style="width: 80px; height: 80px;" alt="Avatar">
+                                     style="width: 80px; height: 80px; border-radius: 100%" alt="{{ user.username }}">
                                 <h6 class="mb-0">{{ user.get_full_name }}</h6>
                                 <small class="text-muted">{{ user.email }}</small>
                             </div>
