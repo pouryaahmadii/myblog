@@ -7,52 +7,163 @@
 
 
 {% block content %}
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <div style="margin-top: 150px;" class="container">
-        <div class="container mt-4">
-            <img style="width: 100px;height: 100px" src="{{ user.profile.avatar.url }}" alt="">
-            <h2> {{ user.get_full_name }}</h2>
-            <p>ایمیل: {{ user.email }}</p>
-            <p> نام کاربری: {{ user.username }}</p>
-            <button id="edit-btn" class="btn btn-outline-primary">ویرایش اطلاعات</button>
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <!-- محتوای سمت چپ اصلی حالا راست شده -->
+                <div class="col-md-9 col-sm-12 order-md-2">
+                    <!-- نمایش اطلاعات -->
+                    <div id="view-info" class="dashboard-section card p-3">
+                        <h5>اطلاعات کاربری</h5>
+                        <img  style="height: 200px;width: 200px; border-radius: 100%" src="{{ user.profile.avatar.url }}"
+                             alt="{{ user.username }}">
+                        <hr>
+                        <p>نام: {{ user.first_name }} {{ user.last_name }}</p>
+                        <p>ایمیل: {{ user.email }}</p>
+                        <p>نام کاربری: {{ user.username }}</p>
+                        <p>شماره تماس: {{ user.profile.phone }}</p>
+                        <p>آدرس: {{ user.profile.address }}</p>
+                        <p>تاریخ تولد: {{ user.profile.birth }}</p>
+                    </div>
+
+                    <!-- ویرایش اطلاعات کاربری -->
+                    <div id="edit-user" class="dashboard-section card p-3" style="display: none;">
+                        <h5>ویرایش اطلاعات کاربری</h5>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ user_up.as_p }}
+                            {{ profile_up.as_p }}
+                            <div class="d-flex justify-content-between mt-3">
+                                <button type="submit" name="update" class="btn btn-success">ذخیره تغییرات</button>
+                                <button type="button" id="cancel-edit-user" class="btn btn-secondary">انصراف</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- تغییر رمز -->
+                    <div id="edit-password" class="dashboard-section card p-3" style="display: none;">
+                        <h5>تغییر رمز</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ pass_up.as_p }}
+                            <div class="d-flex justify-content-between mt-3">
+                                <button type="submit" name="change_password" class="btn btn-warning">تغییر رمز</button>
+                                <button type="button" id="cancel-edit-password" class="btn btn-secondary">انصراف
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- حذف حساب -->
+                    <div id="delete-account" class="dashboard-section card p-3" style="display: none;">
+                        <h5 class="text-danger">حذف حساب</h5>
+                        <form method="post" onsubmit="return confirm('مطمئنی می‌خوای حساب خودتو حذف کنی؟')">
+                            {% csrf_token %}
+                            <button type="submit" name="delete" class="btn btn-danger">حذف حساب</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- منوی سمت راست (که قبلاً سمت چپ بود) -->
+                <div class="col-md-3 col-sm-12 mb-3 order-md-1">
+                    <div class="card shadow-sm text-end">
+                        <div class="card-body p-2">
+                            <div class="text-center mb-3">
+                                <img src="{{ user.profile.avatar.url }}" class="rounded-circle mb-2"
+                                     style="width: 80px; height: 80px;" alt="Avatar">
+                                <h6 class="mb-0">{{ user.get_full_name }}</h6>
+                                <small class="text-muted">{{ user.email }}</small>
+                            </div>
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item p-1">
+                                    <button class="btn btn-primary w-100 d-flex align-items-center justify-content-end"
+                                            data-target="view-info">
+                                        نمایش اطلاعات <i class="bi bi-eye ms-2"></i>
+                                    </button>
+                                </li>
+
+                                <li class="list-group-item p-1">
+                                    <button class="btn btn-success w-100 d-flex align-items-center justify-content-end"
+                                            id="edit-main-btn">
+                                        ویرایش اطلاعات <i class="bi bi-pencil-square ms-2"></i>
+                                    </button>
+                                    <ul class="list-group me-3 mt-2" id="edit-submenu" style="display: none;">
+                                        <li class="list-group-item p-1">
+                                            <button class="btn btn-outline-success w-100 d-flex align-items-center justify-content-end"
+                                                    data-target="edit-user">
+                                                اطلاعات کاربری <i class="bi bi-person ms-2"></i>
+                                            </button>
+                                        </li>
+                                        <li class="list-group-item p-1">
+                                            <button class="btn btn-outline-warning w-100 d-flex align-items-center justify-content-end"
+                                                    data-target="edit-password">
+                                                تغییر رمز <i class="bi bi-key ms-2"></i>
+                                            </button>
+                                        </li>
+                                        <li class="list-group-item p-1">
+                                            <button class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-end"
+                                                    data-target="delete-account">
+                                                حذف حساب <i class="bi bi-trash ms-2"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <hr>
-        <div id="edit-form" style="display: none;" class="mt-3">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ user_up.as_p }}
-                {{ profile_up.as_p }}
-                <button type="submit" name="update" class="btn btn-primary">ذخیره تغییرات</button>
-                <button type="button" id="cancel-btn" class="btn btn-secondary">انصراف</button>
-            </form>
-        </div>
-        <hr>
-        <h5>تغییر رمز عبور</h5>
-        <form method="post">
-            {% csrf_token %}
-            {{ pass_up.as_p }}
-            <button type="submit" name="change_password" class="btn btn-warning">تغییر رمز</button>
-        </form>
-        <hr>
-        <form method="post" onsubmit="return confirm('مطمئنی می‌خوای حساب خودتو حذف کنی؟')">
-            {% csrf_token %}
-            <button type="submit" name="delete" class="btn btn-danger">حذف حساب</button>
-        </form>
     </div>
     <script>
-        const editBtn = document.getElementById('edit-btn');
-        const editForm = document.getElementById('edit-form');
-        const cancelBtn = document.getElementById('cancel-btn');
+        const menuButtons = document.querySelectorAll('.list-group button[data-target]');
+        const sections = document.querySelectorAll('.dashboard-section');
+        const editMainBtn = document.getElementById('edit-main-btn');
+        const editSubmenu = document.getElementById('edit-submenu');
+        const cancelEditUserBtn = document.getElementById('cancel-edit-user');
+        const cancelEditPasswordBtn = document.getElementById('cancel-edit-password');
+        const viewInfoSection = document.getElementById('view-info');
+        const editUserSection = document.getElementById('edit-user');
+        const editPasswordSection = document.getElementById('edit-password');
 
-        editBtn.addEventListener('click', () => {
-            editForm.style.display = 'block';
-            editBtn.style.display = 'none';
+        cancelEditUserBtn.addEventListener('click', () => {
+            editUserSection.style.display = 'none';
+            viewInfoSection.style.display = 'block';
+            menuButtons.forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-target="view-info"]').classList.add('active');
         });
 
-        cancelBtn.addEventListener('click', () => {
-            editForm.style.display = 'none';
-            editBtn.style.display = 'inline-block';
+        cancelEditPasswordBtn.addEventListener('click', () => {
+            editPasswordSection.style.display = 'none';
+            viewInfoSection.style.display = 'block';
+            // فعال کردن منوی سمت چپ روی نمایش اطلاعات
+            menuButtons.forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-target="view-info"]').classList.add('active');
+        });
+
+        // باز/بسته کردن زیرمنو ویرایش
+        editMainBtn.addEventListener('click', () => {
+            editSubmenu.style.display = editSubmenu.style.display === 'none' ? 'block' : 'none';
+        });
+
+        menuButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.target;
+
+                sections.forEach(sec => {
+                    sec.style.display = sec.id === target ? 'block' : 'none';
+                });
+
+                menuButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
         });
     </script>
+
+
+
 {% endblock %}

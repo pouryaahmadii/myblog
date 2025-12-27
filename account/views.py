@@ -17,17 +17,19 @@ class UserDashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user= self.request.user
+        user = self.request.user
         context['user_up'] = UserUpdateForm(instance=user)
         context['profile_up'] = ProfileUpdateForm(instance=user.profile)
-        context['pass_up'] = PasswordChangeForm()
+        context['pass_up'] = PasswordChangeForm(user=user)
         return context
 
     def post(self, request, *args, **kwargs):
         user = request.user
         user_up = UserUpdateForm(request.POST, instance=user)
         profile_up = ProfileUpdateForm(request.POST, request.FILES, instance=user.profile)
-        pass_up = PasswordChangeForm(request.POST)
+        if profile_up.is_valid():
+            profile_up.save()
+        pass_up = PasswordChangeForm(user, request.POST)
 
         if 'update' in request.POST:
             if user_up.is_valid() and profile_up.is_valid():
@@ -37,19 +39,13 @@ class UserDashboardView(LoginRequiredMixin, TemplateView):
                 return redirect('account:user_dashboard')
         elif 'change_password' in request.POST:
             if pass_up.is_valid():
-                old_password = pass_up.cleaned_data['old_password']
-                new_password = pass_up.cleaned_data['new_password1']
-                if user.check_password(old_password):
-                    user.set_password(new_password)
-                    user.save()
-                    update_session_auth_hash(request, user)  # مهم: باعث میشه کاربر بعد از تغییر رمز لاگ‌اوت نشه
-                    messages.success(request, 'رمز عبور با موفقیت تغییر یافت.')
-                else:
-                    messages.error(request, 'رمز فعلی اشتباه است.')
+                pass_up.save(user)
+                update_session_auth_hash(request, user)
+                messages.success(request, 'رمز عبور با موفقیت تغییر یافت')
                 return redirect('account:user_dashboard')
         elif 'delete' in request.POST:
             user.delete()
-            messages.info(request,'حساب شما حذف شد')
+            messages.info(request, 'حساب شما حذف شد')
 
         return self.get(request, *args, **kwargs)
 
@@ -61,8 +57,10 @@ class UserLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('account:user_dashboard')
 
+
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy('home:home')
+
 
 class UserRegisterView(CreateView):
     model = User
