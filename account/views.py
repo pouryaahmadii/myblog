@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm
 from account.models import Profile
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import redirect
 
 
 class UserDashboardView(LoginRequiredMixin, TemplateView):

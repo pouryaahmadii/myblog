@@ -69,7 +69,7 @@ class ProfileUpdateForm(forms.ModelForm):
     birth = forms.CharField(
         label='تاریخ تولد',
         required=False,
-        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'data'})
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
     )
 
     class Meta:
