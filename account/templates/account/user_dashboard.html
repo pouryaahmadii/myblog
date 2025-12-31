@@ -11,7 +11,7 @@
     <div style="margin-top: 150px;" class="container">
         <div class="container-fluid mt-4">
             <div class="row">
-                <!-- محتوای سمت چپ اصلی حالا راست شده -->
+                <!-- محتوای سمت راست  -->
                 <div class="col-md-9 col-sm-12 order-md-2">
                     <!-- نمایش اطلاعات -->
                     <div id="view-info" class="dashboard-section card p-3">
@@ -19,12 +19,12 @@
                         <img  style="height: 200px;width: 200px; border-radius: 100%" src="{{ user.profile.avatar.url }}"
                              alt="{{ user.username }}">
                         <hr>
-                        <p>نام: {{ user.first_name }} {{ user.last_name }}</p>
-                        <p>ایمیل: {{ user.email }}</p>
-                        <p>نام کاربری: {{ user.username }}</p>
-                        <p>شماره تماس: {{ user.profile.phone }}</p>
-                        <p>آدرس: {{ user.profile.address }}</p>
-                        <p>تاریخ تولد: {{ user.profile.birth }}</p>
+                        <p> {{ user.first_name }} {{ user.last_name }}</p>
+                        <p> {{ user.profile.bio }}</p>
+                        <p>ایمیل : {{ user.email }}</p>
+                        <p>شماره تماس : {{ user.profile.phone }}</p>
+                        <p>آدرس : {{ user.profile.address }}</p>
+                        <p>تاریخ تولد : {{ user.profile.birth }}</p>
                     </div>
 
                     <!-- ویرایش اطلاعات کاربری -->
@@ -73,7 +73,7 @@
                                 <img src="{{ user.profile.avatar.url }}" class="rounded-circle mb-2"
                                      style="width: 80px; height: 80px; border-radius: 100%" alt="{{ user.username }}">
                                 <h6 class="mb-0">{{ user.get_full_name }}</h6>
-                                <small class="text-muted">{{ user.email }}</small>
+                                <small class="text-muted">{{ user.username }}</small>
                             </div>
 
                             <ul class="list-group list-group-flush">
