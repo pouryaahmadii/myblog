@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Accounts
+{% endblock %}
+
+
+{% block content %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <div style="margin-top: 150px;" class="container">
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <!-- محتوای سمت راست  -->
+                <div class="col-md-9 col-sm-12 order-md-2">
+                    <!-- نمایش اطلاعات -->
+                    <div id="view-info" class="dashboard-section card p-3">
+                        <h5>اطلاعات کاربری</h5>
+                        <img style="height: 200px;width: 200px; border-radius: 100%" src="{{ user.profile.avatar.url }}"
+                             alt="{{ user.username }}">
+                        <hr>
+                        <p> {{ user.first_name }} {{ user.last_name }}</p>
+                        <p> {{ user.profile.bio }}</p>
+                        <p>ایمیل : {{ user.email }}</p>
+                        <p>شماره تماس : {{ user.profile.phone }}</p>
+                        <p>آدرس : {{ user.profile.address }}</p>
+                        <p>تاریخ تولد : {{ user.profile.birth }}</p>
+                    </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-3 col-sm-12 mb-3 order-md-1">
+                    <div class="card shadow-sm text-end">
+                        <div class="card-body p-2">
+                            <div class="text-center mb-3">
+                                <img src="{{ user.profile.avatar.url }}" class="rounded-circle mb-2"
+                                     style="width: 80px; height: 80px; border-radius: 100%" alt="{{ user.username }}">
+                                <h6 class="mb-0">{{ user.get_full_name }}</h6>
+                                <small class="text-muted">{{ user.username }}</small>
+                            </div>
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item p-1">
+                                    <button class="btn btn-primary w-100 d-flex align-items-center justify-content-end"
+                                            data-target="view-info">
+                                        نمایش اطلاعات <i class="bi bi-eye ms-2"></i>
+                                    </button>
+                                </li>
+
+                                <li class="list-group-item p-1">
+                                    <ul class="list-group me-3 mt-2" id="edit-submenu" style="display: none;">
+                                        <li class="list-group-item p-1">
+                                            <button class="btn btn-outline-success w-100 d-flex align-items-center justify-content-end"
+                                                    data-target="edit-user">
+                                                اطلاعات کاربری <i class="bi bi-person ms-2"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        const menuButtons = document.querySelectorAll('.list-group button[data-target]');
+        const sections = document.querySelectorAll('.dashboard-section');
+        const viewInfoSection = document.getElementById('view-info');
+
+
+
+
+        menuButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.target;
+
+                sections.forEach(sec => {
+                    sec.style.display = sec.id === target ? 'block' : 'none';
+                });
+
+                menuButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    </script>
+
+
+
+{% endblock %}

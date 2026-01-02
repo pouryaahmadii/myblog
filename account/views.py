@@ -5,11 +5,11 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from django.db import transaction
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, DetailView
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm
 from account.models import Profile
 from django.shortcuts import redirect
-
+from blog.models import Article
 
 class UserDashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'account/user_dashboard.html'
@@ -58,10 +58,6 @@ class UserLoginView(LoginView):
         return reverse_lazy('account:user_dashboard')
 
 
-class UserLogoutView(LogoutView):
-    next_page = reverse_lazy('home:home')
-
-
 class UserRegisterView(CreateView):
     model = User
     template_name = 'account/user_register.html'
@@ -75,3 +71,20 @@ class UserRegisterView(CreateView):
         Profile.objects.create(user=user)
         login(self.request, user)
         return response
+
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy('home:home')
+
+
+class UserProfileView(DetailView):
+    model = User
+    template_name = 'account/user_profile.html'
+    context_object_name = 'user'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['author_profile'] = Profile.objects.filter(user=self.object).first()
+        context['articles'] = Article.objects.filter(author=self.object).orde
