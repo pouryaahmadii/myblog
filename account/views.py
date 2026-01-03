@@ -6,10 +6,11 @@ from django.contrib import messages
 from django.db import transaction
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, DetailView
+
+from blog.models import Article
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm
 from account.models import Profile
 from django.shortcuts import redirect
-from blog.models import Article
 
 class UserDashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'account/user_dashboard.html'
@@ -80,11 +81,12 @@ class UserLogoutView(LogoutView):
 class UserProfileView(DetailView):
     model = User
     template_name = 'account/user_profile.html'
-    context_object_name = 'user'
+    context_object_name = 'profile_user'
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['author_profile'] = Profile.objects.filter(user=self.object).first()
-        context['articles'] = Article.objects.filter(author=self.object).orde
+        context['articles'] = Article.objects.filter(author=self.object).order_by('-date',)
+        return context

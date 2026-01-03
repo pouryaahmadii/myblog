@@ -11,7 +11,7 @@ class ArticleListView(ListView):
     context_object_name = "articles"
     queryset = Article.objects.all()
     ordering = ['-date']
-    paginate_by = 1
+    paginate_by = 3
     paginate_orphans = 1
 
 class ArticleDetailView(DetailView):

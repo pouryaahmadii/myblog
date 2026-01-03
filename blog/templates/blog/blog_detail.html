@@ -68,10 +68,10 @@
                     <div class="col-md-12">
                         <div id="blog-author" class="clearfix">
                             <a href="#" class="blog-author-img pull-left">
-                                <img src="{{ author_profile.avatar.url }}" alt="{{ author_profile.user.username }}">
+                                <img src="{{ author_profile.avatar.url }}" alt="{{ author_profile.user.username}}">
                             </a>
                             <div class="blog-author-info">
-                                <h4 class="author-name"><a href="#">{{ article.author }}</a></h4>
+                                <h4 class="author-name"><a href="{% url 'account:user_profile' username=article.author.username %}">{{ article.author }}</a></h4>
                                 <p>{{ user.bio }}</p>
                             </div>
                         </div>

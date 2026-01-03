@@ -36,7 +36,7 @@
                                 <div class="blog-content">
                                     <span class="meta-date"><a href="#">{{ article.date }}</a></span>
                                     <span class="meta-comments"><a href="#">Comments</a></span>
-                                    <span class="meta-author"><a href="#">{{ article.author }}</a></span>
+                                    <span class="meta-author"><a href="{% url 'account:user_profile' username=article.author.username %}">{{ article.author }}</a></span>
                                     <h3><a href="{% url 'blog:article' article.slug %}">{{ article.title }}</a></h3>
                                     <p class="light-text">{{ article.short_description }}</p>
                                     <p>{{ article.short_body }}<a href="{% url 'blog:article' article.slug %}">ادامه مطالب</a></p>
