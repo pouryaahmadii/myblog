@@ -66,10 +66,10 @@
                 {% endif %}
             </ul>
         </li>
-        <li><a href="#">وبلاگ</a>
+        <li><a href="{% url 'blog:blog' %}">وبلاگ</a>
             <ul>
-                <li><a href="blog.html">Blog Standard</a></li>
-                <li><a href="blog-single.html">Blog Single</a></li>
+                <li><a href="blog.html">دسته بندی ها</a></li>
+                <li><a href="blog-single.html">نویسندگان</a></li>
                 <li><a href="#">visit templatemo</a></li>
             </ul>
         </li>
@@ -132,8 +132,8 @@
                         <li class="{% if request.resolver_match.url_name == 'blog' %}active{% endif %}"><a
                                 href="{% url 'blog:blog' %}">وبلاگ</a>
                             <ul>
-                                <li><a href="blog.html">Blog Standard</a></li>
-                                <li><a href="blog-single.html">Blog Single</a></li>
+                                <li><a href="blog.html">دسته بندی ها</a></li>
+                                <li><a href="blog-single.html">نویسندگان</a></li>
                                 <li><a href="#">visit templatemo</a></li>
                             </ul>
                         </li>

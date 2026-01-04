@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -5,7 +6,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from django.db import transaction
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView, DetailView
+from django.views.generic import TemplateView, CreateView, DetailView, ListView
 
 from blog.models import Article
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, PasswordChangeForm
@@ -90,3 +91,17 @@ class UserProfileView(DetailView):
         context['author_profile'] = Profile.objects.filter(user=self.object).first()
         context['articles'] = Article.objects.filter(author=self.object).order_by('-date',)
         return context
+
+class AuthorListView(ListView):
+    model = User
+    template_name = 'account/author.html'
+    context_object_name = 'authors'
+
+    def get_queryset(self):
+
+        return (
+            User.objects.annotate(article_count=Count('articles'))
+            .filter(article_count__gt=0)
+            .order_by('-article_count')
+        )
+
